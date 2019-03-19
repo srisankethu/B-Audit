@@ -20,6 +20,10 @@ import base58
 from api.API import Client
 
 app = Flask(__name__)
+tr = TSocket('161.156.96.21', 9090)
+protocol = TBinaryProtocol(tr)
+client = Client(protocol)
+tr.open()
 
 @app.route('/')
 def homepage():
@@ -63,6 +67,8 @@ def owner_login():
             session['type'] = 'owner'
             session['username'] = request.form["username"]
             session['wallet'] = result[0][0]
+            balance = client.WalletBalanceGet(base64.b64decode(session['wallet'])).balance
+            session['balance'] = balance.integral + (float(balance.fraction)/len(str(balance.fraction)))
             return redirect(url_for('owner', username = request.form["username"]))
         else:
             return render_template("owner_login.html")
@@ -107,6 +113,8 @@ def contractor_login():
             session['type'] = 'contractor'
             session['username'] = request.form["username"]
             session['wallet']  = result[0][0]
+            balance = client.WalletBalanceGet(base64.b64decode(session['wallet'])).balance
+            session['balance'] = balance.integral + (float(balance.fraction)/len(str(balance.fraction)))
             return redirect(url_for('contractor', username = request.form["username"]))
         else:
             return render_template("contractor_login.html")
@@ -181,9 +189,7 @@ def owner(username):
 
         cursor.close()
 
-        balance = 0
-
-        return render_template("owner.html", username = username, wallet = session['wallet'], balance = balance, houses = houses, applied_services = applied_services, ongoing_services = ongoing_services)
+        return render_template("owner.html", username = username, wallet = session['wallet'], balance = session['balance'], houses = houses, applied_services = applied_services, ongoing_services = ongoing_services)
     else:
         return redirect(url_for('homepage'))
 
@@ -211,9 +217,7 @@ def contractor(username):
 
         cursor.close()
 
-        balance = 0
-
-        return render_template("contractor.html", ongoing_services = ongoing_services, done_services = done_services, username = username, wallet = session['wallet'], balance = balance)
+        return render_template("contractor.html", ongoing_services = ongoing_services, done_services = done_services, username = username, wallet = session['wallet'], balance = session['balance'])
     else:
         return redirect(url_for('homepage'))
 
