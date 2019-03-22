@@ -20,6 +20,8 @@ import base58
 from api.API import Client
 
 app = Flask(__name__)
+app.secret_key = os.urandom(12)
+
 tr = TSocket('161.156.96.21', 9090)
 protocol = TBinaryProtocol(tr)
 client = Client(protocol)
@@ -354,5 +356,4 @@ def logout():
 
 
 if __name__ == "__main__":
-    app.secret_key = os.urandom(12)
     app.run(debug=False)
