@@ -14,11 +14,6 @@ import random
 import string
 import ed25519
 
-from thrift.protocol.TBinaryProtocol import TBinaryProtocol
-from thrift.transport.TSocket import TSocket
-import base58
-from api.API import Client
-
 app = Flask(__name__)
 
 @app.route('/')
