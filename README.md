@@ -1,8 +1,5 @@
 # B-Audit
 
-**TITLE**  : INTELLIGENT BUILDING  
-**TEAM**: Sri Sanketh Uppalapati and Sameer Killamsetty  
-
 ## Introduction
 
 A self-conscious home is one which can track its own lifecycle, automate its maintenance decision makings and even improve itself. Our service runs in the background and assists in making intelligent decisions i.e a balanced decision keeping cost and comfort in mind.
